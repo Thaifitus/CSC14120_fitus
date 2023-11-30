@@ -1,4 +1,4 @@
-# mini-dnn-cpp
+# mini-dnn-cpp (Modified based on https://github.com/iamhankai/mini-dnn-cpp.git)
 **mini-dnn-cpp** is a C++ demo of deep neural networks. It is implemented purely in C++, whose only dependency, Eigen, is header-only. 
 
 ## Usage
