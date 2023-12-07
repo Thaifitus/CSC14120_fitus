@@ -27,8 +27,8 @@
 
 
 int main() {
-  // data
-  MNIST dataset("../data/mnist/fashion_mnist/");
+  // data (we're in build folder when run ./demo)
+  MNIST dataset("../data/fashion_mnist/");
   dataset.read();
   int n_train = dataset.train_data.cols();
   int dim_in = dataset.train_data.rows();

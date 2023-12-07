@@ -1,6 +1,0 @@
-/mnt/d/git_test/mini-dnn-cpp/build/CMakeFiles/demo.dir
-/mnt/d/git_test/mini-dnn-cpp/build/CMakeFiles/edit_cache.dir
-/mnt/d/git_test/mini-dnn-cpp/build/CMakeFiles/rebuild_cache.dir
-/mnt/d/git_test/mini-dnn-cpp/build/src/CMakeFiles/MiniDNNLib.dir
-/mnt/d/git_test/mini-dnn-cpp/build/src/CMakeFiles/edit_cache.dir
-/mnt/d/git_test/mini-dnn-cpp/build/src/CMakeFiles/rebuild_cache.dir
