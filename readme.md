@@ -32,7 +32,7 @@ $ sudo apt-get update && sudo apt-get install build-essential
 ### Kết quả
 ![Kết quả trên fashion mnist](https://github.com/Thaifitus/lap_trinh_song_song-CSC14120_20KHMT/blob/master/Report/result_30-11-2023.png)
 
-## CẤU TRÚC MÃ NGUỒN CỦA TÁC GIẢ
+## Cấu trúc mã nguồn của tác giả
 
 THƯ MỤC:
 * src
