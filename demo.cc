@@ -27,7 +27,7 @@
 
 
 int main() {
-  // data (we're in build folder when run ./demo)
+  // data (we're in "build" folder when run ./demo)
   MNIST dataset("../data/fashion_mnist/");
   dataset.read();
   int n_train = dataset.train_data.cols();
