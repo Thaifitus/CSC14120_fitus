@@ -1,6 +1,7 @@
 #include "conv.h"
 #include <math.h>
 #include <iostream>
+#include "filter.h"
 
 void Conv::init() {
   height_out = (1 + (height_in - height_kernel + 2 * pad_h) / stride);
@@ -50,6 +51,12 @@ void Conv::im2col(const Vector& image, Matrix& data_col) {
 }
 
 void Conv::forward(const Matrix& bottom) {
+
+  if (use_device == 1)
+  {
+    invoke_kernel();
+  }
+  
   int n_sample = bottom.cols();
   top.resize(height_out * width_out * channel_out, n_sample);
   data_cols.resize(n_sample);

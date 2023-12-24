@@ -26,7 +26,7 @@
 #include "src/optimizer/sgd.h"
 
 
-int main() {
+int main(int argc, char **argv) {
   // data (we're in "build" folder when run ./demo)
   MNIST dataset("../data/fashion_mnist/");
   dataset.read();
@@ -38,6 +38,8 @@ int main() {
 
   // dnn
   Network dnn;
+  dnn.use_device = atoi(argv[1]);
+  
   Layer* C1 = new Conv(1, 28, 28, 6, 5, 5, 1, 0, 0);
   Layer* P2 = new MaxPooling(6, 24, 24, 2, 2, 2);
   Layer* C3 = new Conv(6, 12, 12, 16, 5, 5, 1, 0, 0);
