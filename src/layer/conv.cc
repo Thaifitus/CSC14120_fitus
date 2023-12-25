@@ -59,7 +59,6 @@ void Conv::im2col(const Vector &image, Matrix &data_col)
 
 void Conv::forward(const Matrix &bottom)
 {
-
   // use host
   if (use_device == 0)
   {
@@ -81,7 +80,31 @@ void Conv::forward(const Matrix &bottom)
   // use device
   else if (use_device > 0)
   {
-    invoke_kernel();
+    int n_sample = bottom.cols();
+    top.resize(height_out * width_out * channel_out, n_sample);
+    data_cols.resize(n_sample);
+    for (int i = 0; i < n_sample; i++)
+    {
+      // im2col
+      Matrix data_col;
+      im2col(bottom.col(i), data_col);
+      data_cols[i] = data_col;
+    }
+
+    // Invoke filter
+    // 1. Covert data from eigen matrix to C pointer (column major)
+    const float *h_in = bottom.data();
+    float *h_out = (float *)malloc(height_out * width_out * channel_out * n_sample * sizeof(float));
+    float *filter = weight.data();
+    
+    // 2. Call function in .cu file to tranfer data to cuda
+    invoke_kernel(h_in, channel_in, height_in, width_in,
+                  h_out, height_out, width_out, channel_out,
+                  n_sample, use_device,
+                  filter, height_kernel, stride, pad_w, pad_h);
+
+    // 3. Free data
+    free(h_out);
   }
 }
 
