@@ -15,8 +15,8 @@
   }
 
 __global__ void filter1(float *d_in, int channel_in, int height_in, int width_in,
-                        float *d_out,
-                        float *filter, int filterWidth, int n)
+                        float *d_out, float *d_bias,
+                        float *filter, int filterWidth, int n_sample, int channel_out)
 {
   // Check images input
   // int d_i = 0;
@@ -29,28 +29,33 @@ __global__ void filter1(float *d_in, int channel_in, int height_in, int width_in
   //   printf("\n");
   // }
 
+  for (int i = 0; i < channel_out; ++i)
+    printf("%f\n", d_bias[i]);
 
   return;
 }
 
 int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in,
                   float *&h_out, int height_out, int width_out, int channel_out,
-                  int n_sample, int filter_type,
+                  int n_sample, int filter_type, float *h_bias,
                   float *filter, int filterWidth, int stride, int pad_w, int pad_h)
 {
   // TODO: Allocate device memories
-  float *d_in, *d_out, *d_filter;
+  float *d_in, *d_out, *d_filter, *d_bias;
   size_t nBytes_d_in = height_in * width_in * channel_in * n_sample * sizeof(float);
   size_t nBytes_d_out = height_out * width_out * channel_out * n_sample * sizeof(float);
   size_t nBytes_d_filter = channel_in * filterWidth * filterWidth * channel_out * sizeof(float);
+  size_t nBytes_d_bias = channel_out * sizeof(float);
 
   CHECK(cudaMalloc((void **)&d_in, nBytes_d_in));
   CHECK(cudaMalloc((void **)&d_out, nBytes_d_out));
   CHECK(cudaMalloc((void **)&d_filter, nBytes_d_filter));
+  CHECK(cudaMalloc((void **)&d_bias, nBytes_d_bias));
 
   // TODO: Copy data to device memories
   CHECK(cudaMemcpy(d_in, h_in, nBytes_d_in, cudaMemcpyHostToDevice));
   CHECK(cudaMemcpy(d_filter, filter, nBytes_d_filter, cudaMemcpyHostToDevice));
+  CHECK(cudaMemcpy(d_bias, h_bias, nBytes_d_bias, cudaMemcpyHostToDevice));
 
   // TODO: Set grid size and call kernel
   dim3 gridSize(1);
@@ -58,8 +63,8 @@ int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in
   if (filter_type == 1)
   {
     filter1<<<gridSize, blockSize>>>(d_in, channel_in, height_in, width_in,
-                                     d_out,
-                                     d_filter, filterWidth, n_sample);
+                                     d_out, d_bias,
+                                     d_filter, filterWidth, n_sample, channel_out);
     // Checks for synchronous errors
     cudaError_t errSync = cudaGetLastError();
     if (errSync != cudaSuccess)
@@ -73,11 +78,12 @@ int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in
   CHECK(cudaFree(d_in));
   CHECK(cudaFree(d_out));
   CHECK(cudaFree(d_filter));
+  CHECK(cudaFree(d_bias));
 
   // cudaDeviceReset(); // Force to print
 
   // return filter type
-  return 0;
+  return filter_type;
 }
 
 #endif

@@ -7,20 +7,7 @@ Cài đặt nguồn: [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.gi
 
 ## Cài đặt và sử dụng
 
-### Git clone
-```shell
-git clone https://github.com/Thaifitus/lap_trinh_song_song-CSC14120_20KHMT.git
-```
 
-### Thay đổi đường dẫn đến thư mục và nhập các câu lệnh sau
-```shell
-mkdir build
-cd build
-cmake ..
-make
-```
-
-Chạy `./demo`.
 
 ### Sửa lỗi
 * **No CMAKE_CXX_COMPILER could be found**: đối với ubuntu (wsl), chạy câu lệnh sau ([nguồn: stackoverflow](https://stackoverflow.com/questions/32801638/cmake-error-at-cmakelists-txt30-project-no-cmake-c-compiler-could-be-found))

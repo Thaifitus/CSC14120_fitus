@@ -96,11 +96,12 @@ void Conv::forward(const Matrix &bottom)
     const float *h_in = bottom.data();
     float *h_out = (float *)malloc(height_out * width_out * channel_out * n_sample * sizeof(float));
     float *filter = weight.data();
-    
+    float *h_bias = bias.data();
+
     // 2. Call function in .cu file to tranfer data to cuda
     invoke_kernel(h_in, channel_in, height_in, width_in,
                   h_out, height_out, width_out, channel_out,
-                  n_sample, use_device,
+                  n_sample, use_device, h_bias,
                   filter, height_kernel, stride, pad_w, pad_h);
 
     // 3. Free data

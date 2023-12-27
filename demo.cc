@@ -39,6 +39,15 @@ int main(int argc, char **argv) {
   // dnn
   Network dnn;
   dnn.use_device = atoi(argv[1]);
+  if(dnn.use_device > 0 )
+    std::cout << "Use device\n";
+  else if(dnn.use_device == 0)
+    std::cout << "Use host\n";
+  else
+  {
+    std::cout << "Cmd argument should be >= 0\n";
+    exit(1);
+  }
   
   Layer* C1 = new Conv(1, 28, 28, 6, 5, 5, 1, 0, 0);
   Layer* P2 = new MaxPooling(6, 24, 24, 2, 2, 2);
