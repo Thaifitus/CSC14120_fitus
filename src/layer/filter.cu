@@ -2,6 +2,8 @@
 
 #include "filter.h"
 
+#define TILE_WIDTH 8
+
 #define CHECK(call)                                          \
   {                                                          \
     const cudaError_t error = call;                          \
@@ -15,10 +17,45 @@
   }
 
 __global__ void filter1(float *d_in, int channel_in, int height_in, int width_in,
-                        float *d_out, float *d_bias,
-                        float *filter, int filterWidth, int n_sample, int channel_out)
+                        float *d_out, int channel_out, int height_out, int width_out,
+                        float *filter, int filterWidth, int W_grid,
+                        float *d_bias)
 {
-  // Check images input
+  // Indices
+  int n = blockIdx.x;                        // sample index
+  int m = blockIdx.y;                        // channel out index
+  int h = (blockIdx.z / W_grid) * blockDim.y + threadIdx.y; // row index in output matrix
+  int w = (blockIdx.z % W_grid) * blockDim.x + threadIdx.x; // column index in output matrix
+
+  int sample_strt = height_in * width_in * channel_in * n; // sample index in input
+  int h_in = h + filterWidth / 2;                          // row index in input
+  int w_in = w + filterWidth / 2;                          // column index in input
+  int filter_strt = channel_in * filterWidth * filterWidth * m; // filter index
+  float acc = 0;                                           // pixel conv result
+  // output index: (sample index) + (channel index) + (current channel)
+  int i_out = (height_out * width_out * channel_out * n) + (height_out * width_out * m) + (h * width_out + w);
+
+  // conv for the pixel in each channel_in
+  for (int i_channel = 0; i_channel < channel_in; i_channel++)
+  {
+    for (int r = h_in - (filterWidth - 1) / 2; r <= h_in + (filterWidth - 1) / 2; r++)
+    {
+      for (int c = w_in - (filterWidth - 1) / 2; c <= w_in + (filterWidth - 1) / 2; c++)
+      {
+        // conv
+        acc += d_in[r * width_in + c + sample_strt] * filter[filter_strt++];
+      }
+    }
+    // Move to next channel in 
+    sample_strt += height_in * width_in;
+  }
+  // Bias adding 
+  acc += d_bias[m];
+  
+  // Final result
+  d_out[i_out] = acc;
+
+  // Check input images
   // int d_i = 0;
   // for (int col = 0; col < n; ++col)
   // {
@@ -29,10 +66,9 @@ __global__ void filter1(float *d_in, int channel_in, int height_in, int width_in
   //   printf("\n");
   // }
 
-  for (int i = 0; i < channel_out; ++i)
-    printf("%f\n", d_bias[i]);
-
-  return;
+  // Check input bias
+  // for (int i = 0; i < channel_out; ++i)
+  //   printf("%f\n", d_bias[i]);
 }
 
 int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in,
@@ -58,13 +94,18 @@ int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in
   CHECK(cudaMemcpy(d_bias, h_bias, nBytes_d_bias, cudaMemcpyHostToDevice));
 
   // TODO: Set grid size and call kernel
-  dim3 gridSize(1);
-  dim3 blockSize(32);
+  dim3 blockSize(TILE_WIDTH, TILE_WIDTH, 1);
+  int W_grid = width_out / TILE_WIDTH;  // number of horizontal tiles per output map
+  int H_grid = height_out / TILE_WIDTH; // number of vertical tiles per output map
+  int Z_grid = H_grid * W_grid;
+  dim3 gridSize(n_sample, channel_out, Z_grid);
+
   if (filter_type == 1)
   {
     filter1<<<gridSize, blockSize>>>(d_in, channel_in, height_in, width_in,
-                                     d_out, d_bias,
-                                     d_filter, filterWidth, n_sample, channel_out);
+                                     d_out, channel_out, height_out, width_out,
+                                     d_filter, filterWidth, W_grid,
+                                     d_bias);
     // Checks for synchronous errors
     cudaError_t errSync = cudaGetLastError();
     if (errSync != cudaSuccess)
@@ -72,7 +113,7 @@ int invoke_kernel(const float *h_in, int channel_in, int height_in, int width_in
   }
 
   // TODO: Copy result from device memory
-  // CHECK(cudaMemcpy(h_out, d_out, nBytes_d_out, cudaMemcpyDeviceToHost));
+  CHECK(cudaMemcpy(h_out, d_out, nBytes_d_out, cudaMemcpyDeviceToHost));
 
   // TODO: Free device memories
   CHECK(cudaFree(d_in));

@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   // dnn
   Network dnn;
   dnn.use_device = atoi(argv[1]);
-  if(dnn.use_device > 0 )
+  if(dnn.use_device > 0)
     std::cout << "Use device\n";
   else if(dnn.use_device == 0)
     std::cout << "Use host\n";

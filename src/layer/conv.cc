@@ -99,14 +99,27 @@ void Conv::forward(const Matrix &bottom)
     float *h_bias = bias.data();
 
     // 2. Call function in .cu file to tranfer data to cuda
-    invoke_kernel(h_in, channel_in, height_in, width_in,
+    int temp = 0;
+    temp = invoke_kernel(h_in, channel_in, height_in, width_in,
                   h_out, height_out, width_out, channel_out,
                   n_sample, use_device, h_bias,
                   filter, height_kernel, stride, pad_w, pad_h);
 
-    // 3. Free data
+    // 3. Transfer result to "top" matrix 
+    if(temp == use_device)
+      top = Eigen::Map<Matrix>(h_out, height_out * width_out * channel_out, n_sample);
+    else
+    {
+      std::cout << "Error in /src/layer/conv.cc (line 113)\n";
+      exit(1);
+    }
+
+    // 4. Free data
     free(h_out);
   }
+
+  // For testing result
+  // std::cout << "TOP MATRIX: " << top << "\n\n";
 }
 
 // col2im, used for grad_bottom
