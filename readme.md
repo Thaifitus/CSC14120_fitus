@@ -18,6 +18,27 @@ Cài đặt nguồn: [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.gi
 * Với phiên bản device, hiện tại đã có 3 phiên bản filter là filter1, filter2, filter3. Để lựa chọn phiên bản thực thi, truyền vào một trong các tham số 0, 1, 2,... tương ứng với host, filter1, filter 2 ... filter k. Ví dụ `./demo 0 ` = phiên bản host; `./demo 1 ` = phiên bản filter 1.
 
 
+## Mô tả bài toán
+### Input
+* Dữ liệu được sử dụng cho đồ án này là tập dữ liệu [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist.git). Fashion-MNIST là bộ dữ liệu gồm 60000 bức ảnh ở tập huấn luyện và 10000 bức ảnh ở tập kiểm thử, tất cả đều là ảnh trắng đen (1 kênh màu). Mỗi bức ảnh ở tập dữ liệu này có kích thước 28x28 pixel và được phân loại bởi 10 lớp khác nhau.
+* Fashion-MNIST có cấu trúc tương tự tập dữ liệu gốc là [MNIST](http://yann.lecun.com/exdb/mnist/). Mục đích của bộ dữ liệu Fashion-MNIST là giúp giảm thiểu tình trạng overfitting của các mô hình học máy đối với bộ dữ liệu gốc là MNIST, từ đó đem lại quá trình đánh giá chính xác hơn.
+* Ở đồ án này, dữ liệu được cấu trúc và xử lý bởi Eigen `Matrix` theo ma trận cột, trong đó mỗi cột là một ảnh và 28x28 dòng cho mỗi pixel của ảnh tương ứng. Các tầng khác nhau có phương thức foward tương ứng với hành vi của tầng để xử lý dữ liệu đầu vào.
+
+### Output
+* Kết quả đầu ra của mô hình mini-dnn-cpp là kết quả phân lớp của dữ liệu đầu vào tương ứng. Nhãn kết quả dự đoán được so sánh với nhãn đúng để tính toán độ chính xác của mô hình. 
+* Ở hai tầng convolution C1 và C3, kết quả đầu ra có cấu trúc giống với dữ liệu đầu vào (Eigen `Matrix` theo ma trận cột, mỗi cột là một ảnh và mỗi dòng là một pixel tương ứng) nhưng số lượng dòng của ma trận là bội số theo channel đầu ra (số lượng filter).
+
+### Ứng dụng của đồ án
+* Toàn bộ dự án là một mạng CNN (Convolutional Neural Network) với các tầng convolution, max pooling, dense layer và các tầng kích hoạt đem lại khả năng nhận dạng và phân lớp những bức ảnh đầu vào. Các pixel của một bức ảnh được lưu trữ bởi thư viện Eigen và được xử lý bởi mô hình để đạt được nhãn dự đoán thích hợp.
+
+### Tăng tốc khả năng xử lý của mô hình
+* Ở phiên bản mặc định, quá trình nhân tích chập ở các tầng convolution (C1, C3) được thực hiện tuần tự cho từng bức ảnh bởi CPU. Điều này không ảnh hưởng đến kết quả phân lớp của mô hình nhưng thời gian thực thi là không hề nhỏ.
+* Ý tưởng tăng tốc cho mô hình là song song hóa quá trình nhân tích chập ở hai tầng C1 và C3. Việc nhân tích chập cho mỗi bức ảnh sẽ diễn ra đồng thời và được thực thi bởi GPU, giúp cải thiện đáng kể thời gian thực thi của mô hình.
+
+
+
+
+
 ## Cấu trúc mã nguồn của tác giả
 THƯ MỤC:
 * src
