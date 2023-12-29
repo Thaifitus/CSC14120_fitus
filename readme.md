@@ -12,7 +12,7 @@ Group ID: 12
 Cài đặt nguồn: [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.git)
 
 
-# Cài đặt và sử dụng
+## Cài đặt và sử dụng
 * Mô hình của đồ án được thực thi với `GPU Tesla T4 7.5` của `Google Colab`. Các cấu hình và kết quả kiểm thử được lưu trữ tại file [notebook](https://colab.research.google.com/drive/1H_2zqUGyKyxCmVCGe7rlknMv2mEp3P6c?usp=sharing).
 * Cmake đã được cấu hình để có thể biên dịch và thực thi với cả hai phiên bản là host (thực thi tuần tự) và device (thực thi song song) cho quá trình nhân tích chập.
 * Với phiên bản device, hiện tại đã có 3 phiên bản filter là filter1, filter2, filter3. Để lựa chọn phiên bản thực thi, truyền vào một trong các tham số 0, 1, 2,... tương ứng với host, filter1, filter 2 ... filter k. Ví dụ `./demo 0 ` = phiên bản host; `./demo 1 ` = phiên bản filter 1.
@@ -48,7 +48,7 @@ MỘT VÀI BIẾN SỐ CỦA CHƯƠNG TRÌNH:
 
 *Thư mục `Report` chứa file báo cáo (.ipynb) trình bày quá trình thực hiện, phân tích mô hình, cài đặt thuật toán... và các tài liệu liên quan.*
 
-# NGUỒN THAM KHẢO
+## NGUỒN THAM KHẢO
 [1] BASE MODEL: mini-dnn-cpp
 * https://github.com/iamhankai/mini-dnn-cpp.git
 
