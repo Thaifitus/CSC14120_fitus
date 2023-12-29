@@ -3,6 +3,7 @@
         "*.expression": "cpp",
         "alignedvector3": "cpp",
         "fft": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "random": "cpp"
     }
 }
