@@ -1,0 +1,17 @@
+ltss project workflow
+===========  ===========
+
+Nội dung notebook
+1. Mô tả bài toán
+	Input, output -> có cần tối ưu?
+2. Mô tả tuần tự
+	design - evaluate
+	Cấu trúc, quy trình của các layer
+	Đánh giá điểm yếu: kết quả, thời gian chạy
+3. Cài đặt song song
+	Analyze - design - implement - evaluate
+4. Tối ưu (mỗi version 1 file, >= 2 kernel)
+	Analyze - design - implement - evaluate
+5. Reflection
+6. Reference
+

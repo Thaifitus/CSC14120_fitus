@@ -6,6 +6,7 @@ Group ID: 12
 |---|---|---|
 | MSSV  | 20127625  | 20127134  |
 
+
 ## mini-dnn-cpp
 **mini-dnn-cpp** là phần cài đặt mạng neuron học sâu, được triển khai hoàn toàn bằng C++. Phần phụ thuộc duy nhất được tác giả sử dụng là Eigen và chỉ dùng làm phần header.
 
@@ -13,6 +14,7 @@ Cài đặt nguồn: [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.gi
 
 
 ## Cài đặt và sử dụng
+* Video trình bày: [YouTube video](https://youtu.be/xfXmyO7JHN0)
 * Mô hình của đồ án được thực thi với `GPU Tesla T4 7.5` của `Google Colab`. Các cấu hình và kết quả kiểm thử được lưu trữ tại file [notebook](https://colab.research.google.com/drive/1H_2zqUGyKyxCmVCGe7rlknMv2mEp3P6c?usp=sharing).
 * Cmake đã được cấu hình để có thể biên dịch và thực thi với cả hai phiên bản là host (thực thi tuần tự) và device (thực thi song song) cho quá trình nhân tích chập.
 * Với phiên bản device, hiện tại đã có 3 phiên bản filter là filter1, filter2, filter3. Để lựa chọn phiên bản thực thi, truyền vào một trong các tham số 0, 1, 2,... tương ứng với host, filter1, filter 2 ... filter k. Ví dụ `./demo 0 ` = phiên bản host; `./demo 1 ` = phiên bản filter 1.
@@ -36,7 +38,15 @@ Cài đặt nguồn: [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.gi
 * Ý tưởng tăng tốc cho mô hình là song song hóa quá trình nhân tích chập ở hai tầng C1 và C3. Việc nhân tích chập cho mỗi bức ảnh sẽ diễn ra đồng thời và được thực thi bởi GPU, giúp cải thiện đáng kể thời gian thực thi của mô hình.
 
 
+## So sánh các phiên bản
+| Phiên bản nhân tích chập  | Độ chính xác (%)  | Thời gian thực thi (giây)  |
+|---|---|---|
+| Host  | 82.97 | 5687  |
+| Filter 1  | 82.77  | 4463  |
+| Filter 2  | 82.82  | 4484  |
+| Filter 3  | 83.05  | 4472  |
 
+![Alt text](Report/versions_compare.png)
 
 
 ## Cấu trúc mã nguồn của tác giả
@@ -69,7 +79,8 @@ MỘT VÀI BIẾN SỐ CỦA CHƯƠNG TRÌNH:
 
 *Thư mục `Report` chứa file báo cáo (.ipynb) trình bày quá trình thực hiện, phân tích mô hình, cài đặt thuật toán... và các tài liệu liên quan.*
 
-## NGUỒN THAM KHẢO
+
+## Nguồn tham khảo
 [1] BASE MODEL: mini-dnn-cpp
 * https://github.com/iamhankai/mini-dnn-cpp.git
 

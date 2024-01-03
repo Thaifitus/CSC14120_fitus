@@ -1,0 +1,41 @@
+---------- DONE ----------
+Các file đã sửa:
+	demo.cc
+	/CMakeLists.txt
+	eigen
+	network
+	layer.h
+	conv.cc
+	Thêm 2 files filter
+
+------------------------------------------------------------
+PHIÊN BẢN ỔN ĐỊNH LUÔN Ở GITHUB
+
+---------- 27/12/2023 ----------
+Sửa file demo.cc
+. Thêm điều kiện cho cmd argument (chọn device hoặc host)
+XÂY DỰNG ĐỒ HÌNH CHO DEVICE
+. Mỗi channel out:
+	1. Conv với tất cả channel in
+	2. Cộng tất cả kết quả conv lại
+	3. Cộng với bias
+. Chọn TILE_WIDTH: là GCD(24, 8) = 8 -> tesla T4 7.5 của gg colab có thể đáp ứng.
+
+---------- 28/12/2023 ----------
+Sửa file /src/layer/filter.cu: tính toán ở filter 1 và lưu trữ dữ liệu vào d_out
+Sửa file conv.cc: kiểm tra tính đồng bộ của device và host; chuyển dữ liệu về top (line ~100 - 110)
+Sửa file filter.cu dòng 27 + 28: sửa h (row out index) + w (column out index)
+
+---------- 29/12/2023 ----------
+// TODO
+(1. Báo cáo)
+2. Nói lại cho Đạt
+3. Team plan & work distribution
+4. Video (15 - 20 mins)
+
+Vì sẽ tính thời gian thực thi của cả chương trình nên không sử dụng gpu timer
+
+---------- RESULT ----------
+Executed by Google colab 19-12-2023 - host filter: 6163 seconds (102 mins)
+28-12-2023 5-th epoch, test acc: 0.5953 - filter 1: 4632 seconds (77 mins)
+
