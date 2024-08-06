@@ -1,7 +1,4 @@
-ltss project workflow
-===========  ===========
-
-Nội dung notebook
+Nội dung report notebook
 1. Mô tả bài toán
 	Input, output -> có cần tối ưu?
 2. Mô tả tuần tự
@@ -14,4 +11,3 @@ Nội dung notebook
 	Analyze - design - implement - evaluate
 5. Reflection
 6. Reference
-

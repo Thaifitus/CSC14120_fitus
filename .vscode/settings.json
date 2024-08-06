@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.expression": "cpp",
-        "alignedvector3": "cpp",
-        "fft": "cpp",
-        "ostream": "cpp",
-        "random": "cpp"
-    }
-}

@@ -1,16 +1,15 @@
 =========== Book ===========
 https://rd.yyrcd.com/Books/2022-03-15-Programming%20Massively%20Parallel%20Processors%203rd%20Edition.pdf
-DNN
-CNN
-Basic CNN
-Improve
+- DNN
+- CNN
+- Basic CNN
+- Optimize
 
 16.3 (slide 362)
 	Basic convolution
 	Improve using SMEM
 16.4
 	Improve using reduction
-
 
 C: number of input feature maps
 H: height of each input
@@ -19,7 +18,7 @@ M: number of output feature maps
 K: height and width of each filter
 
 C1 input: X[1, 32, 32] - 1 image with size 32x32
-blockSize = tile_width x tile_width: 1 thread convolution cho 1 pixel tương ứng
+blockSize = tile_width x tile_width: 1 thread convolve 1 pixel
 
 3d grid dimension cuda c (gg search)
 	https://www.sciencedirect.com/science/article/pii/S0377042715001247
