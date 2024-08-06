@@ -7,12 +7,11 @@ This repository is submission for the final project of **Parallel programming CS
 | Trần Quốc Đạt | 20127134  |
 
 # Introduction
-In this project, I will **implement and optimize** the **forward-pass** of **convolutional layer** (C1 and C3 layers) in modified LeNet-5 model using **CUDA**, based on [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.git) framework which is a C++ demo of deep neural networks. The dataset used is [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist.git); evalution metrics are **model accuracy** and **processing time**.
+In this project, I will **implement and optimize** the **forward-pass** of **convolutional layer** (C1 and C3 layers) in modified LeNet-5 model using **CUDA**, based on [mini-dnn-cpp](https://github.com/iamhankai/mini-dnn-cpp.git) framework which is a C++ demo of deep neural networks. The dataset used is [Fashion-MNIST](https://github.com/zalandoresearch/fashion-mnist.git); evaluation metrics are **model accuracy** and **processing time**.
 
 # Task list
-* Build a complete program with sequential and optimized convolution using CUDA, CMake and Eigen. 
-* Implement three versions of optimized convolution.
-* Evaluate all convolution versions using GPU Testla T4 7.5 by Google Colab.
+* Build a complete program with a sequential and three versions of optimized convolution using CUDA, CMake and Eigen.
+* Evaluate convolution versions using GPU Tesla T4 7.5 by Google Colab.
 * Please refer `/Report.ipynb` - section `Quá trình thực hiện` for the implementation process.
 
 # Reproduce result
